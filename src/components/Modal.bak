@@ -1,3 +1,7 @@
+/* 
+    Lo dejo por si llego a necesitar un modal
+        
+
 import { useEffect } from "react";
 
 function Modal({ canvas, handleModal }) {    
@@ -32,3 +36,4 @@ function Modal({ canvas, handleModal }) {
 }
 
 export default Modal;
+*/
