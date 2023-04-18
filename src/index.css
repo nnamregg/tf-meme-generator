@@ -99,7 +99,19 @@ main {
   max-height: 100%;
 }
 
-.form--input, .form--button, .form--select {
+.form--config {
+  /* padding-bottom: 12px; */
+  margin-bottom: 12px;
+  border-bottom: 2px solid #1F1F1F;
+}
+
+.form--subtitle {
+  font-size: 14px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+.form--input, .form--button, .form--select, .form--color-picker {
   height: 36px;
 }
 
@@ -108,51 +120,71 @@ main {
 }
 
 .form--row {
+  max-width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+}
+
+.form--row > svg {
+  margin-right: 6px;
 }
 
 .form--input {
+  /* max-width: 80%; */
   border-radius: 5px;
   border: 1px solid #D5D4D8;
   text-indent: 5px;
-  flex-grow: 1;
+  flex: 1;
   margin-right: 8px;
   margin-bottom: 0;
 }
 
 .form--row button {
   all: unset;
-  /* border: 1px solid #c02930;
-  border-radius: 100%; */
-  width: 20px;
-  height: 20px;
   text-align: center;
-  font-size: 10px;
   cursor: pointer;
+  margin-inline: 4px;
   transition: transform 2ms ease-in-out;
 }
 
-.form--row button:hover {
-  transform: scale(1.1);
-}
-
-.form--button {
-  grid-column: 1 / -1;
-  border-radius: 5px;
-  background: linear-gradient(90.41deg, #711F8D 1.14%, #A818DA 100%);
-  color: white;
-  border: none;
-  cursor: pointer;
+.form--input-clear, .form--input-delete {
+  font-size: 12px;
 }
 
 .form--button, .save--button {
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  width: 100%;
+  height: 40px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(90.41deg, #711F8D 1.14%, #A818DA 100%);
+}
+
+.save--button > svg, .form--button > svg {
+  margin-inline: 8px;
 }
 
 .form--row > .form--select:first-of-type {
   flex-grow: 1;
   margin-right: 8px;
+}
+
+.form--row > .form--select:last-of-type {
+  flex-grow: 1;
+  margin: 0 !important;
+}
+
+.form--color-picker {
+  max-width: 30%;
+  margin-right: 8px;
+  border-radius: 5px;
+  border: 1px solid #D5D4D8;
+  text-indent: 5px;
 }
 
 .meme {
@@ -183,16 +215,6 @@ main {
   color: white;
   letter-spacing: 1px;
   line-height: 1.2em;
-  text-shadow:
-      2px 2px 0 #000,
-      -2px -2px 0 #000,
-      2px -2px 0 #000,
-      -2px 2px 0 #000,
-      0 2px 0 #000,
-      2px 0 0 #000,
-      0 -2px 0 #000,
-      -2px 0 0 #000,
-      2px 2px 5px #000;
   overflow-wrap: break-word; 
   cursor: move;
   -webkit-user-select: none; /* Safari */
@@ -206,16 +228,6 @@ main {
 
 .top {
   top: 0;
-}
-
-.save--button {
-  border-radius: 5px;
-  width: 100%;
-  height: 40px;
-  background: linear-gradient(90.41deg, #711F8D 1.14%, #A818DA 100%);
-  color: white;
-  border: none;
-  cursor: pointer;
 }
 
 @media screen and (min-width: 768px) {
@@ -253,7 +265,7 @@ main {
     margin-bottom: 12px;
   }
 
-  .form--row:last-of-type {
+  .form--captions {
     margin-bottom: auto;
   }
 
