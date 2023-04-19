@@ -131,7 +131,7 @@ main {
 }
 
 .form--input {
-  /* max-width: 80%; */
+  max-width: 75%;
   border-radius: 5px;
   border: 1px solid #D5D4D8;
   text-indent: 5px;
@@ -150,6 +150,25 @@ main {
 
 .form--input-clear, .form--input-delete {
   font-size: 12px;
+}
+
+.form--add-captions {
+  all: unset;
+  color: #474747;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.form--add-captions > svg {
+  margin-right: 6px;
+  font-size: 18px;
+}
+
+.form--add-captions:hover {
+  color: #858585;
 }
 
 .form--button, .save--button {
@@ -208,6 +227,7 @@ main {
   min-width: 30%;
   max-width: 80%;
   text-align: center;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
   margin: 15px 0;

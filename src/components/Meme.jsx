@@ -4,13 +4,12 @@ import "@melloware/coloris/dist/coloris.css";
 import Coloris from "@melloware/coloris";
 import { AiOutlineClear, AiOutlineCloseCircle, AiFillSave } from 'react-icons/ai';
 import { BsBorderWidth, BsImage } from 'react-icons/bs';
-import { BiFontSize, BiFont } from 'react-icons/bi';
+import { BiFontSize, BiFont, BiMessageAltAdd } from 'react-icons/bi';
 import { MdFormatColorFill, MdBorderColor } from 'react-icons/md';
 
 function Meme() {
     const [meme, setMeme] = useState({
-        topText: "",
-        bottomText: "",
+        captions: {},
         randomImage: "http://i.imgflip.com/1bij.jpg",
         fontFamily: "",
         fontSize: "",
@@ -26,9 +25,13 @@ function Meme() {
             setAllMemes(data.data.memes)
         }
         getMemes();
-        setDragControls();
         setFontsSelector();
     }, [])
+
+    useEffect(() => {
+        console.log('effect meme.captions')
+        setDragControls();
+    }, [Object.keys(meme.captions).length])
 
     function getMemeImage() {
         const randomNumber = Math.floor(Math.random() * allMemes.length)
@@ -40,7 +43,6 @@ function Meme() {
     }
 
     function handleChange(e) {
-        console.log('corre handleChange()')
         const { name, value } = e.target
         setMeme(prevMeme => ({
             ...prevMeme,
@@ -48,40 +50,103 @@ function Meme() {
         }))
     }
 
-    function clearInput(e) {
-        const { name } = e.currentTarget.previousSibling
+    function addCaption() {
+        const captionsLenght = Object.keys(meme.captions).length;
+        
+        if(captionsLenght >= 5) {
+            alert("Ha llegado al máximo de cuadros de texto");
+            return;
+        }
+
+        const captionStr = "caption" + parseInt(Math.random() * 100)
+        const newCaptions = {...meme.captions}
+        newCaptions[`${captionStr}`] = ""; 
+
         setMeme(prevMeme => ({
             ...prevMeme,
-            [name]: ''
+                captions: newCaptions
         }))
     }
 
-    const getTextBoxes = () => {
-        const textBoxes = document.querySelectorAll('.meme--text')
-        return textBoxes
+    function handleCaptions(e) {
+        const { name, value } = e.target
+        const newCaptions = {...meme.captions}
+        newCaptions[name] = value
+
+        setMeme(prevMeme => ({
+            ...prevMeme, 
+                captions: newCaptions
+        }))
+    }
+
+    function deleteCaption(e) {
+        const { name } = e.currentTarget.previousSibling.previousSibling;
+        const newCaptions = {...meme.captions}
+        delete newCaptions[name]
+        setMeme(prevMeme => ({
+            ...prevMeme, 
+                captions: newCaptions
+        }))
+    }
+
+    function clearInput(e) {
+        const { name } = e.currentTarget.previousSibling
+        const newCaptions = {...meme.captions}
+        newCaptions[name] = ""
+
+        setMeme(prevMeme => ({
+            ...prevMeme,
+                captions: newCaptions
+        }))
     }
 
     function setDragControls() {
-        const textBoxes = getTextBoxes()
+        const textBoxes = document.querySelectorAll('.meme--text')
 
         textBoxes.forEach(textBox => {
-            textBox.addEventListener('mousedown', () => {
-                textBox.addEventListener('mousemove', dragText)
-            })
+            if(!textBox.getAttribute('listener')) {
+                textBox.addEventListener('mousedown', () => {
+                    textBox.addEventListener('mousemove', dragText)
+                });
+                textBox.setAttribute('listener', true)
+            }
         })
     }
 
     function dragText({target, movementX, movementY}){
+        document.addEventListener('mouseup', () => {
+            target.removeEventListener('mousemove', dragText)
+        }, { once: true })
+
         const getStyle = window.getComputedStyle(target)
         const leftValue = parseInt(getStyle.left)
         const topValue = parseInt(getStyle.top)
 
-        target.style.left = `${leftValue + movementX}px`
-        target.style.top = `${topValue + movementY}px`
+        const targetBounding = target.getBoundingClientRect();
+        const tl = parseInt(targetBounding.left);
+        const tr = parseInt(targetBounding.right);
+        const tt = parseInt(targetBounding.top);
+        const tb = parseInt(targetBounding.bottom);
 
-        document.addEventListener('mouseup', () => {
-            target.removeEventListener('mousemove', dragText)
-        })
+        const parentBounding = target.parentElement.getBoundingClientRect();
+        const pl = parseInt(parentBounding.left);
+        const pr = parseInt(parentBounding.right);
+        const pt = parseInt(parentBounding.top);
+        const pb = parseInt(parentBounding.bottom);
+
+        const getXLimit = () => {
+            return tl < pl && (movementX < 0) || tr > pr && (movementX > 0);
+        }
+
+        const getYLimit = () => {
+            return tt < pt && (movementY < 0) || tb > pb && (movementY > 0);
+        }
+
+        if (!(getXLimit() || getYLimit())) {
+            target.style.left = `${leftValue + movementX}px`
+            target.style.top = `${topValue + movementY}px`
+        }
+
     }
 
     function setFontsSelector() {
@@ -94,7 +159,7 @@ function Meme() {
             selectFamily.appendChild(option)
         })
 
-        const sizes = [8,10,12,14,16,18,20];
+        const sizes = [7,8,9,10,11,12,14,16,17,18,20];
         const selectSize = document.getElementById('selectFontSize');
 
         sizes.forEach(size => {
@@ -200,8 +265,12 @@ function Meme() {
                                     className="form--select"
                                     value={meme.fontStrokeWidth}
                                     onChange={handleChange}>
+                                        <option value="0">0</option>
+                                        <option value=".5">.5</option>
                                         <option value="1">1</option>
+                                        <option value="1.5">1.5</option>
                                         <option value="2">2</option>
+                                        <option value="2.5">2.5</option>
                                         <option value="3">3</option>
                                 </select>
                             </div>
@@ -211,38 +280,31 @@ function Meme() {
                             Armá tu meme
                         </h3>
                         <div className="form--captions">
-                            <div className="form--row">
-                                <input
-                                    type="text"
-                                    placeholder="Texto arriba"
-                                    name="topText"
-                                    className="form--input"
-                                    value={meme.topText}
-                                    onChange={handleChange}
-                                />
-                                <button className="form--input-clear" onClick={clearInput}>
-                                    <AiOutlineClear />
-                                </button>
-                                <button className="form--input-delete" >
-                                    <AiOutlineCloseCircle />
-                                </button>
-                            </div>
-                            <div className="form--row">
-                                <input
-                                    type="text"
-                                    placeholder="Texto abajo"
-                                    name="bottomText"
-                                    className="form--input"
-                                    value={meme.bottomText}
-                                    onChange={handleChange}
-                                />
-                                <button className="form--input-clear" onClick={clearInput}>
-                                    <AiOutlineClear />
-                                </button>
-                                <button className="form--input-delete" >
-                                    <AiOutlineCloseCircle />
-                                </button>
-                            </div>
+                            {   Object.keys(meme.captions).map((key, index) => {
+                                    return (
+                                        <div className="form--row" key={index}>
+                                            <input
+                                                type="text"
+                                                placeholder="Tira tu magia"
+                                                name={key}
+                                                className="form--input"
+                                                value={meme.captions[key]}
+                                                onChange={handleCaptions}
+                                            />  
+                                            <button className="form--input-clear" onClick={clearInput}>
+                                                <AiOutlineClear />
+                                            </button>
+                                            <button className="form--input-delete" onClick={deleteCaption}>
+                                                <AiOutlineCloseCircle />
+                                            </button>
+                                        </div>
+                                    )
+                                })
+                            }
+                            <button className="form--add-captions" onClick={addCaption}>
+                                <BiMessageAltAdd />
+                                Agregar cuadro de texto
+                            </button>
                         </div>
 
                         <button
@@ -256,24 +318,20 @@ function Meme() {
                     <div className="meme">
                         <div id="memeCapture">
                             <img src={meme.randomImage} className="meme--image" />
-                            <h2 className="meme--text top"
-                                style={{
-                                    fontFamily:meme.fontFamily,
-                                    fontSize:`${meme.fontSize*3}px`,
-                                    color:meme.fontColor,
-                                    WebkitTextStroke:`${meme.fontStrokeWidth}px ${meme.fontStrokeColor}`
-                                }}>
-                                {meme.topText}
-                            </h2>
-                            <h2 className="meme--text bottom"
-                                style={{
-                                    fontFamily:meme.fontFamily,
-                                    fontSize:`${meme.fontSize*3}px`,
-                                    color:meme.fontColor,
-                                    WebkitTextStroke:`${meme.fontStrokeWidth}px ${meme.fontStrokeColor}`
-                                }}>
-                                {meme.bottomText}
-                            </h2>
+                            {   Object.keys(meme.captions).map((key, index) => {
+                                return (
+                                    <h2 className="meme--text" id={key} key={index}
+                                        style={{
+                                            fontFamily:meme.fontFamily,
+                                            fontSize:`${meme.fontSize*3}px`,
+                                            color:meme.fontColor,
+                                            WebkitTextStroke:`${meme.fontStrokeWidth}px ${meme.fontStrokeColor}`
+                                        }}>
+                                        {meme.captions[key]}
+                                    </h2>
+                                )
+                                })
+                            }
                         </div>
                     </div>
                 </div>
