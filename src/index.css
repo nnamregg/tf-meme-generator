@@ -100,7 +100,6 @@ main {
 }
 
 .form--config {
-  /* padding-bottom: 12px; */
   margin-bottom: 12px;
   border-bottom: 2px solid #1F1F1F;
 }
@@ -128,6 +127,7 @@ main {
 
 .form--row > svg {
   margin-right: 6px;
+  width: 14px;
 }
 
 .form--input {
@@ -160,6 +160,8 @@ main {
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
+  margin-bottom: 12px;
+  overflow-y: scroll;
 }
 
 .form--add-captions > svg {
@@ -182,24 +184,29 @@ main {
   border: none;
   cursor: pointer;
   background: linear-gradient(90.41deg, #711F8D 1.14%, #A818DA 100%);
+  flex-shrink: 0;
+}
+
+.form--button:hover, .save--button:hover {
+  background: #CE42FF;
 }
 
 .save--button > svg, .form--button > svg {
   margin-inline: 8px;
 }
 
-.form--row > .form--select:first-of-type {
+.form--row > .form--select {
   flex-grow: 1;
   margin-right: 8px;
 }
 
 .form--row > .form--select:last-of-type {
-  flex-grow: 1;
+  flex-shrink: 1;
   margin: 0 !important;
 }
 
 .form--color-picker {
-  max-width: 30%;
+  max-width: 25%;
   margin-right: 8px;
   border-radius: 5px;
   border: 1px solid #D5D4D8;
@@ -209,7 +216,6 @@ main {
 .meme {
   position: relative;
   width: 100%;
-  text-align: center;
   padding: 12px 0;
 }
 
@@ -222,15 +228,38 @@ main {
   max-width: 100%;
 }
 
-.meme--text {
+.meme--text-container {
   position: absolute;
-  min-width: 30%;
-  max-width: 80%;
-  text-align: center;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  margin: 15px 0;
+  max-width: 100%;
+  border: 3px dashed rgba(0, 0, 0, 0);
+}
+
+.meme--text-container:hover, .meme--text-container.resizing {
+  background-color: rgba(133, 133, 133, 0.5);
+  backdrop-filter: blur(10px);
+  border-color: #A818DA;
+}
+
+.meme--text-container:hover > .meme--text-resizer {
+  display: block;
+}
+
+.meme--text-resizer {
+  display: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: white;
+  border: 2px solid #A818DA;
+  position: absolute;
+  right: -7px;
+  bottom: -7px;
+  cursor: se-resize;
+}
+
+.meme--text {
+  margin: 5px 0;
   padding: 0 5px;
   color: white;
   letter-spacing: 1px;
@@ -240,14 +269,6 @@ main {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
-}
-
-.bottom {
-  bottom: 0;
-}
-
-.top {
-  top: 0;
 }
 
 @media screen and (min-width: 768px) {
@@ -287,6 +308,7 @@ main {
 
   .form--captions {
     margin-bottom: auto;
+    overflow-y: scroll;
   }
 
   .meme {
