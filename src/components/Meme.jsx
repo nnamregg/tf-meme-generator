@@ -31,8 +31,9 @@ function Meme() {
         Coloris.init();
         Coloris({
             el: '.form--color-picker',
-            wrap: false,
-            theme: 'pill',
+            wrap: true,
+            // theme: 'pill',
+            theme: 'default',
             selectInput: true,
             themeMode: 'auto'
         });
@@ -44,7 +45,7 @@ function Meme() {
     const textAlignments = {"start": "Izquierda",
                             "end": "Derecha",
                             "center": "Centrado"};
-    const strokeWidths = [.5, 1, 1.5, 2, 2.5, 3]; 
+    const strokeWidths = [0,.5, 1, 1.5, 2, 2.5, 3]; 
 
     function getMemeImage() {
         const randomNumber = Math.floor(Math.random() * allMemes.length)
@@ -113,14 +114,27 @@ function Meme() {
         }))
     }
 
-    function setDragControls(e) {
-        e.currentTarget.addEventListener('mousemove', dragText)
+    const setDragControls = (e) => {
+        (e.type === 'mousedown')
+            ? e.currentTarget.addEventListener('mousemove', dragMouse)
+            : (e.type === 'touchstart')
+            ? e.currentTarget.addEventListener('touchmove', dragTouch)
+            : null;
     }
 
-    function dragText({currentTarget, movementX, movementY}){
+    function dragTouch(e) {
+        // console.log(e)
+
+        /* document.addEventListener('touchend', () => {
+            e.preventDefault();
+            currentTarget.removeEventListener('touchmove', dragText)
+        }, { once: true }) */
+    }
+
+    function dragMouse({currentTarget, movementX, movementY}){
         document.addEventListener('mouseup', () => {
-            currentTarget.removeEventListener('mousemove', dragText)
-        }, { once: true })
+            currentTarget.removeEventListener('mousemove', dragMouse)
+        })
 
         const getStyle = window.getComputedStyle(currentTarget)
         const leftValue = parseInt(getStyle.left)
@@ -133,50 +147,95 @@ function Meme() {
         const tb = parseInt(targetBounding.bottom);
 
         const parentBounding = currentTarget.parentElement.getBoundingClientRect();
+
         const pl = parseInt(parentBounding.left);
         const pr = parseInt(parentBounding.right);
         const pt = parseInt(parentBounding.top);
         const pb = parseInt(parentBounding.bottom);
 
         const getXLimit = () => {
-            return tl < pl && (movementX < 0) || tr > pr && (movementX > 0);
+            return movementX < 0
+                ? tl > pl
+                : movementX > 0
+                ? tr < pr
+                : null
         }
 
         const getYLimit = () => {
-            return tt < pt && (movementY < 0) || tb > pb && (movementY > 0);
+            return movementY < 0
+                ? tt > pt
+                : movementY > 0
+                ? tb < pb
+                : null
         }
 
-        if (!(getXLimit() || getYLimit())) {
+        if(getXLimit()) {
             currentTarget.style.left = `${leftValue + movementX}px`
+        }
+
+        if (getYLimit()) {
             currentTarget.style.top = `${topValue + movementY}px`
         }
     }
 
     function setResizeControls(e) {
-        e.stopPropagation()
+        e.stopPropagation();
 
         const resizableDiv = e.currentTarget.parentElement;
         resizableDiv.classList.add('resizing');
+        const memeCapture = resizableDiv.parentElement;
 
         const resize = (e) => {
-            resizableDiv.style.width = e.pageX - resizableDiv.getBoundingClientRect().left + 'px';
-            resizableDiv.style.height = e.pageY - resizableDiv.getBoundingClientRect().top + 'px';
+            // console.log(e)
+            const pr = parseInt(memeCapture.getBoundingClientRect().right);
+            const pb = parseInt(memeCapture.getBoundingClientRect().bottom);
+
+            // console.log('pr = ', pr)
+            // console.log('pb = ', pb)
+
+            const getXLimit = () => {
+                return e.movementX < 0
+                    ? true
+                    : e.movementX > 0
+                    ? !(e.clientX >= pr)
+                    : null
+            }
+
+            const getYLimit = () => {
+                return e.movementY < 0
+                    ? true
+                    : e.movementY > 0
+                    ? !(e.clientY >= pb)
+                    : null
+            }
+
+            if(getXLimit()) {
+                resizableDiv.style.width = e.pageX - resizableDiv.getBoundingClientRect().left + 'px';
+            }
+
+            if(getYLimit()) {
+                resizableDiv.style.height = e.pageY - resizableDiv.getBoundingClientRect().top + 'px';
+            }
         }
 
         const stopResize = () => {
             document.removeEventListener('mousemove', resize);
+            // document.removeEventListener('touchmove', resize);
             resizableDiv.classList.remove('resizing');
         }
 
         document.addEventListener('mousemove', resize)
         document.addEventListener('mouseup', stopResize)
+
+        // document.addEventListener('touchmove', resize)
+        // document.addEventListener('touchend', stopResize)
     }
 
     function downloadMeme(e) {
         const datetimestr = () => {
-            const regex = /[-T\:]/ig;
+            const regex = /[-\:]/ig;
             const datetime = new Date().toISOString().slice(0, -5)
-            const datetimestr = datetime.replaceAll(regex, '');
+            const datetimestr = datetime.replaceAll(regex, '').replace('T', '_');
             return datetimestr
         }
 
@@ -237,23 +296,6 @@ function Meme() {
                                         })
                                     }
                                 </select>
-                                <AiOutlineAlignLeft />
-                                <select
-                                    name="textAlign"
-                                    id="selectTextAlign"
-                                    className="form--select"
-                                    value={meme.textAlign}
-                                    onChange={handleChange}
-                                    style={{maxWidth:"15%"}}
-                                >
-                                    {
-                                        Object.keys(textAlignments).map((key, index) => {
-                                            return (
-                                                <option key={index} value={key}>{textAlignments[key]}</option>
-                                            )
-                                        })
-                                    }
-                                </select>
                             </div>
                             <div className="form--row">
                                 <MdFormatColorFill />
@@ -280,14 +322,33 @@ function Meme() {
                                     id="fontStrokeWidth"
                                     className="form--select"
                                     value={meme.fontStrokeWidth}
-                                    onChange={handleChange}>
-                                        {
-                                            strokeWidths.map((key, index) => {
-                                                return (
-                                                    <option key={index} value={key}>{key}</option>
-                                                )
-                                            })
-                                        }
+                                    onChange={handleChange}
+                                    style={{maxWidth:"15%"}}
+                                >
+                                    {
+                                        strokeWidths.map((key, index) => {
+                                            return (
+                                                <option key={index} value={key}>{key}</option>
+                                            )
+                                        })
+                                    }
+                                </select>
+                                <AiOutlineAlignLeft />
+                                <select
+                                    name="textAlign"
+                                    id="selectTextAlign"
+                                    className="form--select"
+                                    value={meme.textAlign}
+                                    onChange={handleChange}
+                                    style={{maxWidth:"20%"}}
+                                >
+                                    {
+                                        Object.keys(textAlignments).map((key, index) => {
+                                            return (
+                                                <option key={index} value={key}>{textAlignments[key]}</option>
+                                            )
+                                        })
+                                    }
                                 </select>
                             </div>
                         </div>
@@ -317,10 +378,13 @@ function Meme() {
                                     )
                                 })
                             }
-                            <button className="form--add-captions" onClick={addCaption}>
-                                <BiMessageAltAdd />
-                                Agregar cuadro de texto
-                            </button>
+                            <div className="form--row">
+                                <button className="form--add-captions" onClick={addCaption}>
+                                    <BiMessageAltAdd />
+                                    Agregar cuadro de texto
+                                </button>
+                            </div>
+                            
                         </div>
 
                         <button
@@ -336,7 +400,7 @@ function Meme() {
                             <img src={meme.randomImage} className="meme--image" />
                             { Object.keys(meme.captions).map((key, index) => {
                                 return (
-                                    <div className="meme--text-container" id={key} key={index} onMouseDown={setDragControls}>
+                                    <div className="meme--text-container" id={key} key={index} onMouseDown={setDragControls} onTouchStart={setDragControls}>
                                         <div className="meme--text-resizer" onMouseDown={setResizeControls}></div>
                                         <h2 className="meme--text"
                                             style={{

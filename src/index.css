@@ -44,10 +44,38 @@
 * {
   box-sizing: border-box;
   font-family: 'Ubuntu', sans-serif;
+  scrollbar-width: thin;
+  scrollbar-color: #2B2A33;
+}
+
+*::-webkit-scrollbar {
+  width: 4px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #2B2A33;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #2B2A33;
+  border-radius: 2px;
+  border: 2px solid #2B2A33;
 }
 
 body {
   margin: 0;
+}
+
+main {
+  width: 100%;
+  height: 100%;
+  padding: 24px 8px;
+}
+
+input, select {
+  color: #FFF;
+  background-color: #2B2A33;
+  border-radius: 5px;
 }
 
 .header {
@@ -75,16 +103,10 @@ body {
   font-weight: 500;
 }
 
-main {
-  width: 100%;
-  height: 100%;
-  padding: 36px;
-}
-
 .container {
   width: 100%;
   background-color: #141414;
-  padding: 24px;
+  padding: 12px;
   border-radius: 12px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
@@ -102,12 +124,13 @@ main {
 .form--config {
   margin-bottom: 12px;
   border-bottom: 2px solid #1F1F1F;
+  padding-bottom: 8px;
 }
 
 .form--subtitle {
   font-size: 14px;
   margin-top: 4px;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .form--input, .form--button, .form--select, .form--color-picker {
@@ -115,7 +138,7 @@ main {
 }
 
 .form--row, .form--button {
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .form--row {
@@ -153,20 +176,16 @@ main {
 }
 
 .form--add-captions {
-  all: unset;
-  color: #474747;
-  display: flex;
-  align-items: center;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  margin-bottom: 12px;
-  overflow-y: scroll;
+  color: #474747 !important;
+  display: flex !important;
+  align-items: center !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
 }
 
 .form--add-captions > svg {
   margin-right: 6px;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .form--add-captions:hover {
@@ -183,6 +202,7 @@ main {
   height: 40px;
   border: none;
   cursor: pointer;
+  color: #FFF;
   background: linear-gradient(90.41deg, #711F8D 1.14%, #A818DA 100%);
   flex-shrink: 0;
 }
@@ -193,6 +213,10 @@ main {
 
 .save--button > svg, .form--button > svg {
   margin-inline: 8px;
+}
+
+.save--button {
+  margin-top: 12px;
 }
 
 .form--row > .form--select {
@@ -206,11 +230,22 @@ main {
 }
 
 .form--color-picker {
+  visibility: hidden;
+}
+
+.form--color-picker, .clr-field {
   max-width: 25%;
   margin-right: 8px;
-  border-radius: 5px;
+  /* border-radius: 5px; */
   border: 1px solid #D5D4D8;
   text-indent: 5px;
+}
+
+.clr-field {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .meme {
@@ -221,11 +256,14 @@ main {
 
 #memeCapture {
   overflow: hidden;
+  line-height: 0;
+  height: fit-content;
+  margin: 0;
 }
 
 .meme--image {
   max-height: 100%;
-  max-width: 100%;
+  width: 100%;
 }
 
 .meme--text-container {
@@ -278,18 +316,20 @@ main {
 
   main {
     height: 100%;
+    padding: 36px;
     display: flex;
     align-items: center;
   }
 
   .container {
-    width: 1024px;
+    width: 768;
     margin: auto;
+    padding: 24px;
   }
 
   .meme--editor {
     display: flex;
-    height: 450px;
+    height: 500px;
     max-width: 100%;
     margin-bottom: 12px;
     padding-bottom: 12px;
@@ -302,30 +342,43 @@ main {
     border-right: 2px solid #1F1F1F;
   }
 
-  .form--row {
-    margin-bottom: 12px;
+  .form--subtitle {
+    margin-bottom: 8px;
   }
 
   .form--captions {
     margin-bottom: auto;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
 
   .meme {
     width: 70%;
     height: 100%;
     padding: 8px;
+    overflow-y: auto;
+    display: flex;
+    align-content: center;
   }
 
   #memeCapture {
-    height: 100%;
     position: relative;
-    width: fit-content;
-    margin: 0 auto;
+    width: 100%;
+    margin: auto;
   }
 
   .meme--image {
-    height: 100%;
+    max-height: 100%;
+    margin: 0;
   }
   
+}
+
+@media screen and (min-width: 1200px) {
+  .container {
+    width: 1200px;
+  }
+
+  .meme--editor {
+    height: 600px;
+  }
 }
