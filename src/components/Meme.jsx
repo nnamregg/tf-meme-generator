@@ -2,29 +2,31 @@ import { useState, useEffect } from "react";
 import html2canvas from "html2canvas";
 import "@melloware/coloris/dist/coloris.css";
 import Coloris from "@melloware/coloris";
-import { AiOutlineAlignLeft, AiOutlineClear, AiOutlineCloseCircle, AiFillSave } from 'react-icons/ai';
-import { BsBorderWidth, BsImage } from 'react-icons/bs';
+import { AiOutlineAlignLeft, AiOutlineClear, AiOutlineCloseCircle, AiFillSave, AiOutlineDownload, AiOutlineSearch } from 'react-icons/ai';
+import { BsBorderWidth, BsShuffle } from 'react-icons/bs';
 import { BiFontSize, BiFont, BiMessageAltAdd } from 'react-icons/bi';
 import { MdFormatColorFill, MdBorderColor } from 'react-icons/md';
+import GalleryModal from "./Modal";
 
 function Meme() {
     const [meme, setMeme] = useState({
         captions: {},
-        randomImage: "http://i.imgflip.com/1bij.jpg",
+        template: "http://i.imgflip.com/1bij.jpg",
         fontFamily: "Impact",
         fontSize: "12",
         fontColor: "#fff",
         fontStrokeWidth: 1.5,
         fontStrokeColor: "#000",
         textAlign: "center"
-    })
-    const [allMemes, setAllMemes] = useState([])
+    });
+    const [allMemes, setAllMemes] = useState([]);
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         async function getMemes() {
-            const res = await fetch("https://api.imgflip.com/get_memes")
-            const data = await res.json()
-            setAllMemes(data.data.memes)
+            const res = await fetch("https://api.imgflip.com/get_memes");
+            const data = await res.json();
+            setAllMemes(data.data.memes);
         }
         getMemes();
 
@@ -37,7 +39,7 @@ function Meme() {
             selectInput: true,
             themeMode: 'auto'
         });
-    }, [])
+    }, []);
 
 
     const fontFamilies = ["Impact", "Comic Sans", "Arial", "Myriad Pro", "Montserrat"];
@@ -47,22 +49,29 @@ function Meme() {
                             "center": "Centrado"};
     const strokeWidths = [0,.5, 1, 1.5, 2, 2.5, 3]; 
 
-    function getMemeImage() {
-        const randomNumber = Math.floor(Math.random() * allMemes.length)
-        const url = allMemes[randomNumber].url
+    function getRandomTemplate() {
+        const randomNumber = Math.floor(Math.random() * allMemes.length);
+        const url = allMemes[randomNumber].url;
         setMeme(prevMeme => ({
             ...prevMeme,
-            randomImage: url
-        }))
-    }
+            template: url
+        }));
+    };
+
+    function getTemplate(meme) {
+        setMeme(prevMeme => ({
+            ...prevMeme,
+            template: meme.url
+        }));
+    };
 
     function handleChange(e) {
-        const { name, value } = e.target
+        const { name, value } = e.target;
         setMeme(prevMeme => ({
             ...prevMeme,
             [name]: value
-        }))
-    }
+        }));
+    };
 
     function addCaption() {
         const captionsLenght = Object.keys(meme.captions).length;
@@ -72,46 +81,56 @@ function Meme() {
             return;
         }
 
-        const captionStr = "caption" + parseInt(Math.random() * 100)
-        const newCaptions = {...meme.captions}
+        const captionStr = "caption" + parseInt(Math.random() * 100);
+        const newCaptions = {...meme.captions};
         newCaptions[`${captionStr}`] = ""; 
 
         setMeme(prevMeme => ({
             ...prevMeme,
                 captions: newCaptions
-        }))
-    }
+        }));
+    };
 
     function handleCaptions(e) {
-        const { name, value } = e.target
-        const newCaptions = {...meme.captions}
-        newCaptions[name] = value
+        const { name, value } = e.target;
+        const newCaptions = {...meme.captions};
+        newCaptions[name] = value;
 
         setMeme(prevMeme => ({
             ...prevMeme, 
                 captions: newCaptions
-        }))
-    }
+        }));
+    };
 
     function deleteCaption(e) {
         const { name } = e.currentTarget.previousSibling.previousSibling;
-        const newCaptions = {...meme.captions}
-        delete newCaptions[name]
+        const newCaptions = {...meme.captions};
+        delete newCaptions[name];
         setMeme(prevMeme => ({
             ...prevMeme, 
                 captions: newCaptions
-        }))
-    }
+        }));
+    };
 
     function clearInput(e) {
-        const { name } = e.currentTarget.previousSibling
-        const newCaptions = {...meme.captions}
-        newCaptions[name] = ""
+        const { name } = e.currentTarget.previousSibling;
+        const newCaptions = {...meme.captions};
+        newCaptions[name] = "";
 
         setMeme(prevMeme => ({
             ...prevMeme,
                 captions: newCaptions
-        }))
+        }));
+    };
+
+    const handleModal = () => {
+        setShowModal(!showModal);
+
+        if(!showModal) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "auto";
+        }
     }
 
     const setDragControls = (e) => {
@@ -120,7 +139,7 @@ function Meme() {
             : (e.type === 'touchstart')
             ? e.currentTarget.addEventListener('touchmove', dragTouch)
             : null;
-    }
+    };
 
     function dragTouch(e) {
         // console.log(e)
@@ -134,11 +153,11 @@ function Meme() {
     function dragMouse({currentTarget, movementX, movementY}){
         document.addEventListener('mouseup', () => {
             currentTarget.removeEventListener('mousemove', dragMouse)
-        })
+        });
 
-        const getStyle = window.getComputedStyle(currentTarget)
-        const leftValue = parseInt(getStyle.left)
-        const topValue = parseInt(getStyle.top)
+        const getStyle = window.getComputedStyle(currentTarget);
+        const leftValue = parseInt(getStyle.left);
+        const topValue = parseInt(getStyle.top);
 
         const targetBounding = currentTarget.getBoundingClientRect();
         const tl = parseInt(targetBounding.left);
@@ -158,25 +177,25 @@ function Meme() {
                 ? tl > pl
                 : movementX > 0
                 ? tr < pr
-                : null
-        }
+                : null;
+        };
 
         const getYLimit = () => {
             return movementY < 0
                 ? tt > pt
                 : movementY > 0
                 ? tb < pb
-                : null
-        }
+                : null;
+        };
 
         if(getXLimit()) {
-            currentTarget.style.left = `${leftValue + movementX}px`
-        }
+            currentTarget.style.left = `${leftValue + movementX}px`;
+        };
 
         if (getYLimit()) {
-            currentTarget.style.top = `${topValue + movementY}px`
-        }
-    }
+            currentTarget.style.top = `${topValue + movementY}px`;
+        };
+    };
 
     function setResizeControls(e) {
         e.stopPropagation();
@@ -198,46 +217,46 @@ function Meme() {
                     ? true
                     : e.movementX > 0
                     ? !(e.clientX >= pr)
-                    : null
-            }
+                    : null;
+            };
 
             const getYLimit = () => {
                 return e.movementY < 0
                     ? true
                     : e.movementY > 0
                     ? !(e.clientY >= pb)
-                    : null
-            }
+                    : null;
+            };
 
             if(getXLimit()) {
                 resizableDiv.style.width = e.pageX - resizableDiv.getBoundingClientRect().left + 'px';
-            }
+            };
 
             if(getYLimit()) {
                 resizableDiv.style.height = e.pageY - resizableDiv.getBoundingClientRect().top + 'px';
-            }
-        }
+            };
+        };
 
         const stopResize = () => {
             document.removeEventListener('mousemove', resize);
             // document.removeEventListener('touchmove', resize);
             resizableDiv.classList.remove('resizing');
-        }
+        };
 
-        document.addEventListener('mousemove', resize)
-        document.addEventListener('mouseup', stopResize)
+        document.addEventListener('mousemove', resize);
+        document.addEventListener('mouseup', stopResize);
 
         // document.addEventListener('touchmove', resize)
         // document.addEventListener('touchend', stopResize)
-    }
+    };
 
     function downloadMeme(e) {
         const datetimestr = () => {
             const regex = /[-\:]/ig;
-            const datetime = new Date().toISOString().slice(0, -5)
+            const datetime = new Date().toISOString().slice(0, -5);
             const datetimestr = datetime.replaceAll(regex, '').replace('T', '_');
-            return datetimestr
-        }
+            return datetimestr;
+        };
 
         html2canvas(document.getElementById('memeCapture'),
                     {   allowTaint: true,
@@ -251,7 +270,7 @@ function Meme() {
                             link.href = img
                             link.click()
                         });
-    }
+    };
 
     return (
         <main>
@@ -389,15 +408,23 @@ function Meme() {
 
                         <button
                             className="form--button"
-                            onClick={getMemeImage}
+                            onClick={getRandomTemplate}
                         >
-                            <BsImage />
-                            Cambiar imagen
+                            {/* <BsImage /> */}
+                            <BsShuffle />
+                            Plantilla aleatoria
+                        </button>
+                        <button
+                            className="form--button"
+                            onClick={handleModal}
+                        >
+                            <AiOutlineSearch />
+                            Buscar plantilla
                         </button>
                     </div>
                     <div className="meme">
                         <div id="memeCapture">
-                            <img src={meme.randomImage} className="meme--image" />
+                            <img src={meme.template} className="meme--image" />
                             { Object.keys(meme.captions).map((key, index) => {
                                 return (
                                     <div className="meme--text-container" id={key} key={index} onMouseDown={setDragControls} onTouchStart={setDragControls}>
@@ -426,6 +453,10 @@ function Meme() {
                     Guardar meme
                 </button>
             </div>
+            { showModal
+                ? <GalleryModal allMemes={allMemes} getTemplate={getTemplate} handleModal={handleModal}/>
+                : null
+            }
         </main>
     )
 }

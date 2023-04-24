@@ -69,28 +69,32 @@ body {
 main {
   width: 100%;
   height: 100%;
-  padding: 24px 8px;
+  padding: 3rem .5rem;
 }
 
 input, select {
   color: #FFF;
   background-color: #2B2A33;
-  border-radius: 5px;
+  border-radius: .3rem;
+}
+
+button > svg {
+  margin-inline: .6rem;
 }
 
 .header {
   display: flex;
   align-items: center;
-  height: 65px;
+  height: 4rem;
   background: linear-gradient(90deg, #672280 1.18%, #A626D3 100%);
   color: white;
-  padding: 20px;
+  padding: 1.2rem;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
 }
 
 .header--image {
   height: 100%;
-  margin-right: 18px;
+  margin-right: 1rem;
 }
 
 .header--title {
@@ -106,8 +110,8 @@ input, select {
 .container {
   width: 100%;
   background-color: #141414;
-  padding: 12px;
-  border-radius: 12px;
+  padding: 1rem .8rem;
+  border-radius: .6rem;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
 
@@ -122,23 +126,23 @@ input, select {
 }
 
 .form--config {
-  margin-bottom: 12px;
+  margin-bottom: .8rem;
   border-bottom: 2px solid #1F1F1F;
-  padding-bottom: 8px;
+  padding-bottom: .6rem;
 }
 
 .form--subtitle {
-  font-size: 14px;
-  margin-top: 4px;
-  margin-bottom: 12px;
+  font-size: .9rem;
+  margin-top: .5rem;
+  margin-bottom: .8rem;
 }
 
-.form--input, .form--button, .form--select, .form--color-picker {
-  height: 36px;
+.form--input, .form--button, .form--select, .form--color-picker, .modal--btns > button {
+  height: 2.4rem;
 }
 
 .form--row, .form--button {
-  margin-bottom: 12px;
+  margin-bottom: .8rem;
 }
 
 .form--row {
@@ -149,17 +153,17 @@ input, select {
 }
 
 .form--row > svg {
-  margin-right: 6px;
-  width: 14px;
+  margin-right: .2rem;
+  width: 1rem;
 }
 
 .form--input {
-  max-width: 75%;
-  border-radius: 5px;
+  max-width: 85%;
+  border-radius: .3rem;
   border: 1px solid #D5D4D8;
   text-indent: 5px;
   flex: 1;
-  margin-right: 8px;
+  margin-right: .4rem;
   margin-bottom: 0;
 }
 
@@ -167,39 +171,38 @@ input, select {
   all: unset;
   text-align: center;
   cursor: pointer;
-  margin-inline: 4px;
   transition: transform 2ms ease-in-out;
 }
 
 .form--input-clear, .form--input-delete {
-  font-size: 12px;
+  font-size: .8rem;
 }
 
 .form--add-captions {
   color: #474747 !important;
   display: flex !important;
   align-items: center !important;
-  font-size: 12px !important;
+  font-size: .8rem !important;
   font-weight: 500 !important;
 }
 
 .form--add-captions > svg {
-  margin-right: 6px;
-  font-size: 16px;
+  margin-right: .4rem;
+  font-size: 1rem;
 }
 
 .form--add-captions:hover {
   color: #858585;
 }
 
-.form--button, .save--button {
+.form--button, .save--button, .modal--btn-select, .modal--btn-cancel {
   font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 5px;
+  border-radius: .3rem;
   width: 100%;
-  height: 40px;
+  height: 2.4rem;
   border: none;
   cursor: pointer;
   color: #FFF;
@@ -207,21 +210,17 @@ input, select {
   flex-shrink: 0;
 }
 
-.form--button:hover, .save--button:hover {
+.form--button:hover, .save--button:hover, .modal--btns > button:hover {
   background: #CE42FF;
 }
 
-.save--button > svg, .form--button > svg {
-  margin-inline: 8px;
-}
-
 .save--button {
-  margin-top: 12px;
+  margin-top: .8rem;
 }
 
 .form--row > .form--select {
   flex-grow: 1;
-  margin-right: 8px;
+  margin-right: .4rem;
 }
 
 .form--row > .form--select:last-of-type {
@@ -235,15 +234,14 @@ input, select {
 
 .form--color-picker, .clr-field {
   max-width: 25%;
-  margin-right: 8px;
-  /* border-radius: 5px; */
+  margin-right: .4rem;
   border: 1px solid #D5D4D8;
   text-indent: 5px;
 }
 
 .clr-field {
-  height: 30px;
-  width: 30px;
+  height: 1.8rem;
+  width: 1.8rem;
   border-radius: 50%;
   overflow: hidden;
 }
@@ -251,13 +249,12 @@ input, select {
 .meme {
   position: relative;
   width: 100%;
-  padding: 12px 0;
+  padding: .8rem 0;
 }
 
 #memeCapture {
   overflow: hidden;
   line-height: 0;
-  height: fit-content;
   margin: 0;
 }
 
@@ -297,16 +294,105 @@ input, select {
 }
 
 .meme--text {
-  margin: 5px 0;
-  padding: 0 5px;
+  margin: .2rem 0;
+  padding: 0 .2rem;
   color: white;
-  letter-spacing: 1px;
   line-height: 1.2em;
   overflow-wrap: break-word; 
   cursor: move;
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
+}
+
+.modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+}
+
+.modal--search {
+  text-align: center;
+  margin: 6rem 0 2rem;
+}
+
+.modal--content {
+  width: 90%;
+  max-height: 65%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  overflow-y: scroll;
+}
+
+.modal--content > input {
+  position: fixed;
+  top: 6rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.modal--templates-grid {
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 2rem;
+}
+
+.modal--template-card {
+  max-width: auto;
+  max-height: 16rem;
+  cursor: pointer;
+  transition: transform 200ms ease-in-out;
+  background-color: #000;
+  border: 1px solid #1F1F1F;
+  border-radius: .5rem;
+  overflow: hidden;
+}
+
+.modal--template-card:hover {
+  transform: scale(1.02);
+}
+
+.modal--template-card:hover > h3 {
+  color: #CE42FF;
+}
+
+.modal--template-card.selected {
+  transform: scale(1.02);
+  background-color: #CE42FF;
+  color: #141414;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -.8rem 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px .8rem 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.modal--template-card.selected:hover > h3 {
+  color: #141414;
+}
+
+.modal--template-card > h3 {
+  font-size: .9rem;
+  user-select: none;
+}
+
+.modal--template-card > img {
+  max-width: 100%;
+}
+
+.modal--btns {
+  max-width: 40%;
+  margin: 1rem auto;
+}
+
+.modal--btn-select, .modal--btn-cancel {
+  margin: 1.2rem auto;
 }
 
 @media screen and (min-width: 768px) {
@@ -316,34 +402,38 @@ input, select {
 
   main {
     height: 100%;
-    padding: 36px;
+    padding: 1.2rem;
     display: flex;
     align-items: center;
   }
 
   .container {
-    width: 768;
     margin: auto;
-    padding: 24px;
+    padding: 1rem;
   }
 
   .meme--editor {
     display: flex;
-    height: 500px;
+    height: 40rem;
     max-width: 100%;
-    margin-bottom: 12px;
-    padding-bottom: 12px;
+    margin-bottom: .8rem;
+    padding-bottom: .8rem;
   }
 
   .form {
     width: 30%;
     margin-right: auto;
-    padding-right: 12px;
+    padding-right: .8rem;
     border-right: 2px solid #1F1F1F;
   }
 
   .form--subtitle {
-    margin-bottom: 8px;
+    margin-bottom: .5rem;
+  }
+
+  .form--input {
+    max-width: 60%;
+    flex-shrink: 1;
   }
 
   .form--captions {
@@ -354,7 +444,7 @@ input, select {
   .meme {
     width: 70%;
     height: 100%;
-    padding: 8px;
+    padding: .4rem;
     overflow-y: auto;
     display: flex;
     align-content: center;
@@ -362,13 +452,26 @@ input, select {
 
   #memeCapture {
     position: relative;
-    width: 100%;
     margin: auto;
   }
 
   .meme--image {
     max-height: 100%;
+    max-width: 100%;
     margin: 0;
+  }
+
+  .modal--templates-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .modal--btns {
+    display: flex;
+    margin: 3rem auto;
+  }
+
+  .modal--btn-select, .modal--btn-cancel {
+    width: 45%;
   }
   
 }
@@ -378,7 +481,11 @@ input, select {
     width: 1200px;
   }
 
-  .meme--editor {
-    height: 600px;
+  .form--input {
+    max-width: 90%;
+  }
+
+  .modal--templates-grid {
+    grid-template-columns: repeat(6, 1fr);
   }
 }
