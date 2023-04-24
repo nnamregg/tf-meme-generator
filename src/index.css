@@ -125,7 +125,7 @@ button > svg {
   max-height: 100%;
 }
 
-.form--config {
+.form--config, .form--template {
   margin-bottom: .8rem;
   border-bottom: 2px solid #1F1F1F;
   padding-bottom: .6rem;
@@ -137,7 +137,7 @@ button > svg {
   margin-bottom: .8rem;
 }
 
-.form--input, .form--button, .form--select, .form--color-picker, .modal--btns > button {
+.form--input, .form--button, .form--select, .modal--btns > button {
   height: 2.4rem;
 }
 
@@ -152,13 +152,22 @@ button > svg {
   justify-content: space-between;
 }
 
-.form--row > svg {
-  margin-right: .2rem;
-  width: 1rem;
+.form--control {
+  display: flex;
+  align-items: center;
+  margin-right: .4rem;
+  flex: 1;
+}
+
+.form--control > svg {
+  margin-right: .4rem;
+}
+
+.form--row > .form--control:last-of-type {
+  margin: 0 !important;
 }
 
 .form--input {
-  max-width: 85%;
   border-radius: .3rem;
   border: 1px solid #D5D4D8;
   text-indent: 5px;
@@ -218,22 +227,11 @@ button > svg {
   margin-top: .8rem;
 }
 
-.form--row > .form--select {
-  flex-grow: 1;
-  margin-right: .4rem;
+.form--select {
+  flex: 1;
 }
 
-.form--row > .form--select:last-of-type {
-  flex-shrink: 1;
-  margin: 0 !important;
-}
-
-.form--color-picker {
-  visibility: hidden;
-}
-
-.form--color-picker, .clr-field {
-  max-width: 25%;
+.clr-field {
   margin-right: .4rem;
   border: 1px solid #D5D4D8;
   text-indent: 5px;
@@ -329,6 +327,7 @@ button > svg {
   padding: 2rem;
   text-align: center;
   overflow-y: scroll;
+  position: relative;
 }
 
 .modal--content > input {
