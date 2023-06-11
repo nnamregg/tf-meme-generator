@@ -5,7 +5,7 @@ const Header = () => {
                 src="/troll-face.png" 
                 className="header--image"
             />
-            <h2 className="header--title">Generador de Memes</h2>
+            <h2 className="header--title">memeplex</h2>
             <h4 className="header--project">✍️</h4>
         </header>
     )
