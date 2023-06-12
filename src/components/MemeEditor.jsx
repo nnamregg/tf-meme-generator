@@ -141,9 +141,12 @@ function Meme({ allMemes }) {
                     Guardar meme
                 </button>
             </div>
-            { showModal
-                ? <GalleryModal allMemes={allMemes} getTemplate={getTemplate} handleModal={handleModal}/>
-                : null
+            { showModal &&
+                <GalleryModal
+                    allMemes={allMemes}
+                    getTemplate={getTemplate}
+                    handleModal={handleModal}
+                />
             }
         </main>
     )

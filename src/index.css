@@ -150,6 +150,7 @@ button > svg {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  overflow: hidden;
 }
 
 .form--control {
@@ -188,7 +189,7 @@ button > svg {
 }
 
 .form--add-captions {
-  color: #474747 !important;
+  color: #858585 !important;
   display: flex !important;
   align-items: center !important;
   font-size: .8rem !important;
@@ -198,10 +199,6 @@ button > svg {
 .form--add-captions > svg {
   margin-right: .4rem;
   font-size: 1rem;
-}
-
-.form--add-captions:hover {
-  color: #858585;
 }
 
 .form--button, .save--button, .modal--btn-select, .modal--btn-cancel {
@@ -245,12 +242,13 @@ button > svg {
 }
 
 .meme {
-  position: relative;
+  /* position: relative; */
   width: 100%;
   padding: .8rem 0;
 }
 
 #memeCapture {
+  position: relative;
   overflow: hidden;
   line-height: 0;
   margin: 0;
@@ -261,39 +259,45 @@ button > svg {
   width: 100%;
 }
 
-.meme--text-container {
-  position: absolute;
-  top: 0;
-  max-width: 100%;
-  border: 3px dashed rgba(0, 0, 0, 0);
+.control-box-show {
+  z-index: 10 !important;
 }
 
-.meme--text-container:hover, .meme--text-container.resizing {
-  background-color: rgba(133, 133, 133, 0.5);
-  backdrop-filter: blur(10px);
-  border-color: #A818DA;
+.control-box-show > .moveable-line.moveable-direction {
+  height: 2px !important;
+  background: #A818DA !important;
+  transform-origin: 0px 0.5px !important;
 }
 
-.meme--text-container:hover > .meme--text-resizer {
-  display: block;
+.control-box-show .moveable-control {
+  width: 12px !important;
+  height: 12px !important;
+  border: 2px solid #A818DA !important;
+  background: #FFF !important;
+  margin-top: -6px !important;
+  margin-left: -6px !important;
 }
 
-.meme--text-resizer {
-  display: none;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background-color: white;
-  border: 2px solid #A818DA;
-  position: absolute;
-  right: -7px;
-  bottom: -7px;
-  cursor: se-resize;
+.control-box-show > .moveable-rotation > .moveable-control.moveable-rotation-control {
+  border: 2px solid #A818DA !important;
+}
+
+.control-box-show > .moveable-rotation > .moveable-line.moveable-rotation-line {
+  border: 1px solid #A818DA !important;
+}
+
+.control-box-hide > .moveable-line.moveable-direction,
+.control-box-hide > .moveable-control,
+.control-box-hide > .moveable-rotation {
+  display: none !important;
 }
 
 .meme--text {
-  margin: .2rem 0;
-  padding: 0 .2rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
   color: white;
   line-height: 1.2em;
   overflow-wrap: break-word; 
@@ -301,6 +305,15 @@ button > svg {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
+}
+
+.meme--text.show {
+  background-color: rgba(133, 133, 133, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+.meme--text.hide {
+  background: none;
 }
 
 .modal {

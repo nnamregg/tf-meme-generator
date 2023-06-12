@@ -15,5 +15,6 @@ Simple generador de memes con posibilidad de exportar la imagen creada.
 ### Librerías
 
 - [`react-icons`](https://www.npmjs.com/package/react-icons)
+- [`react-moveable`](https://www.npmjs.com/package/react-moveable)
 - [`html2canvas`](https://www.npmjs.com/package/html2canvas)
 - [`@melloware/coloris`](https://www.npmjs.com/package/@melloware/coloris)
