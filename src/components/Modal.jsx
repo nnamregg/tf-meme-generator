@@ -1,16 +1,9 @@
-import { useState, useEffect } from "react";
-import { AiFillCheckCircle, AiFillCloseCircle } from "react-icons/ai";
+import { useState } from "react";
+import { AiOutlineSearch, AiFillCheckCircle, AiFillCloseCircle } from "react-icons/ai";
 
 function GalleryModal({ allMemes, getTemplate, handleModal }) {
     const [filterMemes, setFilterMemes] = useState(allMemes);
     const [template, setTemplate] = useState({});
-
-    useEffect(() => {
-        document.querySelector(".modal").scrollIntoView({
-            behavior: "smooth",
-            block: "end",
-        });
-    }, []);
 
     function fuzzySearch(query, name) {
         const str = name.toLowerCase();
@@ -67,7 +60,23 @@ function GalleryModal({ allMemes, getTemplate, handleModal }) {
     return(
         <div className="modal">
             <div className="modal--search">
-                <input type="search" name="search-input" id="search-input" placeholder="Buscar plantilla" className="form--input" onChange={filterTemplates} />
+                <AiOutlineSearch style={{
+                    position:"absolute",
+                    top: "30%",
+                    left: "5%"
+                    }}
+                />
+                <input
+                    type="search"
+                    name="search-input"
+                    id="search-input"
+                    placeholder="Buscar plantilla"
+                    className="form--input"
+                    style={{
+                        textIndent:"18%"
+                    }}
+                    autoFocus={true}
+                    onChange={filterTemplates} />
             </div>
             <div className="modal--content">
                 <div className="modal--templates-grid">

@@ -73,9 +73,10 @@ main {
 }
 
 input, select {
-  color: #FFF;
-  background-color: #2B2A33;
-  border-radius: .3rem;
+  all: unset;
+  color: #cacaca;
+  font-size: .8rem;
+  border-bottom: 1px solid #cacaca;
 }
 
 button > svg {
@@ -155,6 +156,7 @@ button > svg {
 
 .form--control {
   display: flex;
+  position: relative;
   align-items: center;
   margin-right: .4rem;
   flex: 1;
@@ -225,6 +227,8 @@ button > svg {
 }
 
 .form--select {
+  position: relative;
+  text-indent: 15px;
   flex: 1;
 }
 
@@ -242,7 +246,6 @@ button > svg {
 }
 
 .meme {
-  /* position: relative; */
   width: 100%;
   padding: .8rem 0;
 }
@@ -328,8 +331,13 @@ button > svg {
 }
 
 .modal--search {
-  text-align: center;
-  margin: 6rem 0 2rem;
+  width: fit-content;
+  position: relative;
+  margin: 6rem auto 2rem;
+}
+
+.modal--search > #search-input {
+  text-indent: 12%;
 }
 
 .modal--content {
@@ -341,13 +349,6 @@ button > svg {
   text-align: center;
   overflow-y: scroll;
   position: relative;
-}
-
-.modal--content > input {
-  position: fixed;
-  top: 6rem;
-  left: 50%;
-  transform: translateX(-50%);
 }
 
 .modal--templates-grid {
@@ -407,7 +408,7 @@ button > svg {
   margin: 1.2rem auto;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 1024px) {
   body {
     height: 100vh;
   }

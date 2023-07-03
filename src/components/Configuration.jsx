@@ -45,10 +45,8 @@ function Configuration({ meme, setConfig, getRandomTemplate, handleModal, setCap
     };
 
     function clearInput(e) {
-        console.log(e)
         const { name } = e.currentTarget.previousSibling;
         const id = name.slice(-1);
-        console.log(id)
         clearCaption(id);
     }
 
@@ -60,7 +58,11 @@ function Configuration({ meme, setConfig, getRandomTemplate, handleModal, setCap
                 </h3>
                 <div className="form--row">
                     <div className="form--control">
-                        <BiFont />
+                        <BiFont style={{
+                                position:"absolute",
+                                left:"5px"
+                            }} 
+                        />
                         <select
                             name="fontFamily"
                             id="selectFontFamily"
@@ -69,17 +71,19 @@ function Configuration({ meme, setConfig, getRandomTemplate, handleModal, setCap
                             style={{fontFamily:meme.fontFamily}}
                             onChange={setConfig}
                         >
-                            {
-                                fontFamilies.map((key, index) => {
-                                    return (
-                                        <option key={index} value={key}>{key}</option>
-                                    )
-                                })
-                            }
+                            { fontFamilies.map((key, index) => {
+                                return (
+                                    <option key={index} value={key}>{key}</option>
+                                )
+                            })}
                         </select>
                     </div>
                     <div className="form--control">
-                        <BiFontSize />
+                        <BiFontSize style={{
+                                position:"absolute",
+                                left:"5px"
+                            }}
+                        />
                         <select
                             name="fontSize"
                             id="selectFontSize"
@@ -87,18 +91,16 @@ function Configuration({ meme, setConfig, getRandomTemplate, handleModal, setCap
                             value={meme.fontSize}
                             onChange={setConfig}
                         >
-                            {
-                                fontSizes.map((key, index) => {
-                                    return (
-                                        <option key={index} value={key}>{key}</option>
-                                    )
-                                })
-                            }
+                            { fontSizes.map((key, index) => {
+                                return (
+                                    <option key={index} value={key}>{key}</option>
+                                )
+                            })}
                         </select>
                     </div>
                 </div>
                 <div className="form--row">
-                    <div className="form--control">
+                    <div className="form--control" style={{flex:0}}>
                         <MdFormatColorFill />
                         <input
                             type="text"
@@ -108,6 +110,8 @@ function Configuration({ meme, setConfig, getRandomTemplate, handleModal, setCap
                             value={meme.fontColor}
                             onInput={setConfig}
                         />
+                    </div>
+                    <div className="form--control" style={{flex:0}}>
                         <MdBorderColor />
                         <input
                             type="text"
@@ -119,25 +123,11 @@ function Configuration({ meme, setConfig, getRandomTemplate, handleModal, setCap
                         />
                     </div>
                     <div className="form--control">
-                        <BsBorderWidth />
-                        <select
-                            name="fontStrokeWidth"
-                            id="fontStrokeWidth"
-                            className="form--select"
-                            value={meme.fontStrokeWidth}
-                            onChange={setConfig}
-                        >
-                            {
-                                strokeWidths.map((key, index) => {
-                                    return (
-                                        <option key={index} value={key}>{key}</option>
-                                    )
-                                })
-                            }
-                        </select>
-                    </div>
-                    <div className="form--control">
-                        <AiOutlineAlignLeft />
+                        <AiOutlineAlignLeft style={{
+                                position:"absolute",
+                                left:"5px"
+                            }}
+                        />
                         <select
                             name="textAlign"
                             id="selectTextAlign"
@@ -145,13 +135,37 @@ function Configuration({ meme, setConfig, getRandomTemplate, handleModal, setCap
                             value={meme.textAlign}
                             onChange={setConfig}
                         >
-                            {
-                                Object.keys(textAlignments).map((key, index) => {
-                                    return (
-                                        <option key={index} value={key}>{textAlignments[key]}</option>
-                                    )
-                                })
-                            }
+                            { Object.keys(textAlignments).map((key, index) => {
+                                return (
+                                    <option
+                                        key={index}
+                                        value={key}>{textAlignments[key]}
+                                    </option>
+                                )
+                            })}
+                        </select>
+                    </div>
+                    <div className="form--control">
+                        <BsBorderWidth style={{
+                                position:"absolute",
+                                left:"5px"
+                            }}
+                        />
+                        <select
+                            name="fontStrokeWidth"
+                            id="fontStrokeWidth"
+                            className="form--select"
+                            value={meme.fontStrokeWidth}
+                            onChange={setConfig}
+                        >
+                            { strokeWidths.map((key, index) => {
+                                return (
+                                    <option
+                                        key={index}
+                                        value={key}>{key}
+                                    </option>
+                                )
+                            })}
                         </select>
                     </div>
                 </div>
@@ -165,7 +179,6 @@ function Configuration({ meme, setConfig, getRandomTemplate, handleModal, setCap
                     className="form--button"
                     onClick={getRandomTemplate}
                 >
-                    {/* <BsImage /> */}
                     <BsShuffle />
                     Aleatoria
                 </button>
