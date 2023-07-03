@@ -1,17 +1,23 @@
-import { useState, useEffect } from 'react'
-import Header from './components/Header'
-import MemeEditor from './components/MemeEditor'
-import './App.css'
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import Header from './components/Header';
+import MemeEditor from './components/MemeEditor';
+import './App.css';
 
 function App() {
     const [allMemes, setAllMemes] = useState([]);
 
     useEffect(() => {
         async function getMemes() {
-            const res = await fetch("https://api.imgflip.com/get_memes");
-            const data = await res.json();
-            setAllMemes(data.data.memes);
+            try {
+                const res = await axios.get("https://api.imgflip.com/get_memes");
+                const memes = res.data.data.memes;
+                setAllMemes(memes);    
+            } catch (error) {
+                alert('Error: ', error);
+            }
         }
+
         getMemes();
 
     }, []);
@@ -24,4 +30,4 @@ function App() {
     )
 }
 
-export default App
+export default App;
