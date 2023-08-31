@@ -1,31 +1,29 @@
 import MemeCaption from "./MemeCaption";
 
-function Preview({ meme }) {
-    
-    return (
-        <div className="meme">
-            <div id="memeCapture">
-                
-                <img src={meme.template} className="meme--image" />
+function Preview({ template, captions, config }) {
+  const imgSrc = template?.url
 
-                { meme.captions.map((caption, index) =>
-                    <MemeCaption
-                        key={`caption-${index}`}
-                        caption={caption}
-                        index={index}
-                        styles={{
-                            fontFamily:meme.fontFamily,
-                            fontSize:`${meme.fontSize*3}px`,
-                            color:meme.fontColor,
-                            textAlign:meme.textAlign,
-                            WebkitTextStroke:`${meme.fontStrokeWidth}px ${meme.fontStrokeColor}`
-                        }} 
-                    />
-                )}
+  return (
+    <div className="meme">
+      <div id="memeCapture">
+        <img src={imgSrc} className="meme--image" />
 
-            </div>
-        </div>
-    )
-} 
+        {captions?.map((caption) => (
+          <MemeCaption
+            key={caption.id}
+            caption={caption}
+            styles={{
+              fontFamily: config.fontFamily,
+              fontSize: `${config.fontSize * 3}px`,
+              color: config.fontColor,
+              textAlign: config.textAlign,
+              WebkitTextStroke: `${config.fontStrokeWidth}px ${config.fontStrokeColor}`,
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default Preview;

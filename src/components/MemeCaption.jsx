@@ -1,26 +1,28 @@
 import { useState } from "react";
 import Moveable from "react-moveable";
 
-function MemeCaption({ caption, index, styles }) {
+function MemeCaption({ caption, styles }) {
     const [showControls, setShowControls] = useState(false);
 
     return (
         <>
         <h2 className={`meme--text ${showControls ? "show" : "hide"}`}
-            id={`caption-${index}`}
+            id={`caption-${caption.id}`}
             style={styles}
             onClick={e => setShowControls(!showControls)}
+            // onMouseEnter={e => setShowControls(true)}
+            // onMouseLeave={e => setShowControls(false)}
             onTouchStart={e => setShowControls(true)}
             onTouchMove={e => setShowControls(true)}
             onTouchEnd={e => setTimeout(() => {
                 setShowControls(false)
             }, 1500) }
             >
-            { caption }
+            { caption.txt }
         </h2>
         <Moveable
             className={`control-box-${showControls ? "show" : "hide"}`}
-            target={document.querySelector(`#caption-${index}`)}
+            target={document.querySelector(`#caption-${caption.id}`)}
             dragContainer={document.querySelector('#memeCapture')}
             origin={false}
             edge={true}
