@@ -2,7 +2,14 @@ import { useState, useEffect } from "react";
 import { useMemesList } from "../hooks/useMemesList";
 import { ACTIONS, useMemeEditor } from "../hooks/useMemeEditor";
 import html2canvas from "html2canvas";
-import { AiFillSave } from "react-icons/ai";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  Spinner,
+} from "@material-tailwind/react";
+import { MdSave } from "react-icons/md";
 import Configuration from "./Configuration";
 import Preview from "./Preview";
 import GalleryModal from "./GalleryModal";
@@ -43,6 +50,7 @@ function MemeEditor() {
   };
   // - de configuracion:
   function setConfig(e) {
+    // console.log(e)
     const { name, value } = e.target;
     dispatch({ type: ACTIONS.SET_CONFIG, payload: { name, value } });
   }
@@ -54,7 +62,6 @@ function MemeEditor() {
   const deleteCaption = (captionId) =>
     dispatch({ type: ACTIONS.DELETE_CAPTION, payload: { captionId } });
 
-
   const handleGalleryModal = () => {
     setShowModal(!showModal);
 
@@ -64,7 +71,6 @@ function MemeEditor() {
       document.body.style.overflow = "auto";
     }
   };
-
 
   function downloadMeme() {
     setRendering(true);
@@ -93,8 +99,11 @@ function MemeEditor() {
 
   return (
     <main>
-      <div className="container">
-        <div className="meme--editor">
+      <Card
+        color="transparent"
+        className="mx-auto w-full shadow-lg md:w-11/12 xl:w-4/5 max-w-6xl"
+      >
+        <CardBody className="h-full border-b-2 border-gray-900 p-0 lg:flex lg:h-[40rem]">
           <Configuration
             randomizeMeme={randomizeMeme}
             handleGalleryModal={handleGalleryModal}
@@ -105,27 +114,37 @@ function MemeEditor() {
             addCaption={addCaption}
             deleteCaption={deleteCaption}
           />
-
-          {loading ? (
-            // Pero dios mío! ponga un spinner buen hombre!
-            <h1>loading...</h1>
-          ) : (
-            <Preview
-              template={state.template}
-              captions={state.captions}
-              config={state.config}
-            />
-          )}
-        </div>
-        <button
-          className="save--button"
-          onClick={downloadMeme}
-          disabled={rendering}
-        >
-          <AiFillSave />
-          Guardar meme
-        </button>
-      </div>
+          <section className="w-full px-0 py-3 lg:flex lg:h-full lg:w-2/3 lg:content-center lg:overflow-y-auto lg:border-l-2 lg:border-gray-900 lg:p-2">
+            {loading ? (
+              <Spinner color="teal" className="m-auto h-20 w-20" />
+            ) : (
+              <Preview
+                template={state.template}
+                captions={state.captions}
+                config={state.config}
+              />
+            )}
+          </section>
+        </CardBody>
+        <CardFooter>
+          <Button
+            variant="filled"
+            className="flex items-center justify-center gap-3"
+            fullWidth
+            onClick={downloadMeme}
+            disabled={rendering}
+          >
+            {rendering ? (
+              <Spinner color="teal" className="h-4 w-4" />
+            ) : (
+              <>
+                <MdSave className="text-base" />
+                Guardar meme
+              </>
+            )}
+          </Button>
+        </CardFooter>
+      </Card>
 
       {!showModal ? null : (
         <GalleryModal

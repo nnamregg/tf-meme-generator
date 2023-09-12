@@ -10,15 +10,11 @@ export const fontFamilies = [
   "Montserrat",
 ];
 
-export const fontSizes = [7, 8, 9, 10, 11, 12, 14, 16, 17, 18, 20, 24, 28, 32];
+export const fontSizes = ['7', '8', '9', '10', '11', '12', '14', '16', '17', '18', '20', '24', '28', '32'];
 
-export const textAlignments = {
-  start: "Izquierda",
-  end: "Derecha",
-  center: "Centrado",
-};
+export const textAlignments = [ 'start', 'center', 'end' ];
 
-export const strokeWidths = [0, 0.5, 1, 1.5, 2, 2.5, 3];
+export const strokeWidths = ['0', '0.5', '1', '1.5', '2', '2.5', '3'];
 
 const getRandomItem = (arr) => {
   // why ? just why ???
@@ -33,5 +29,5 @@ export const initialConfig = {
   fontColor: "#fff",
   fontStrokeColor: "#000", 
   fontStrokeWidth: getRandomItem(strokeWidths),
-  textAlign: getRandomItem(Object.keys(textAlignments)),
+  textAlign: getRandomItem(textAlignments),
 }
