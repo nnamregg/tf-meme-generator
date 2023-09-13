@@ -1,21 +1,20 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
+import { twMerge as tm } from "tailwind-merge";
 import Moveable from "react-moveable";
 
 function MemeCaption({ caption, styles }) {
   const [showControls, setShowControls] = useState(false);
 
-  const captionClasses = useMemo(() => {
-    return 'box-content absolute top-0 left-0 p-2 leading-none break-words cursor-move select-none ' + (showControls ? "bg-memeplex-800/50 backdrop-blur-md" : "bg-none");
-  }, [showControls]);
-
-  const moveableClasses = useMemo(() => {
-    return "control-box-" + (showControls ? "show" : "hide");
-  }, [showControls]);
+  const captionClasses =
+    "box-content absolute top-0 left-0 p-2 leading-none break-words cursor-move select-none bg-none";
 
   return (
     <>
       <h2
-        className={captionClasses}
+        className={tm(
+          captionClasses,
+          showControls && "bg-memeplex-800/30 backdrop-blur-md",
+        )}
         id={`caption-${caption.id}`}
         style={styles}
         onClick={(e) => setShowControls(!showControls)}
@@ -34,7 +33,10 @@ function MemeCaption({ caption, styles }) {
         {caption.txt}
       </h2>
       <Moveable
-        className={moveableClasses}
+        className={tm(
+          "h-full w-full",
+          showControls ? "control-box-show" : "control-box-hide",
+        )}
         target={document.querySelector(`#caption-${caption.id}`)}
         dragContainer={document.querySelector("#memeCapture")}
         origin={false}

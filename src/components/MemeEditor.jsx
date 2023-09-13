@@ -12,7 +12,7 @@ import {
 import { MdSave } from "react-icons/md";
 import Configuration from "./Configuration";
 import Preview from "./Preview";
-import GalleryModal from "./GalleryModal";
+import GalleryModal from "./Gallery/Modal";
 
 function MemeEditor() {
   const { memesList, loading, error } = useMemesList();
@@ -66,6 +66,7 @@ function MemeEditor() {
     setShowModal(!showModal);
 
     if (!showModal) {
+      window.scrollTo(0,0)
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
@@ -98,54 +99,55 @@ function MemeEditor() {
   }
 
   return (
-    <main>
-      <Card
-        color="transparent"
-        className="mx-auto w-full shadow-lg md:w-11/12 xl:w-4/5 max-w-6xl"
-      >
-        <CardBody className="h-full border-b-2 border-gray-900 p-0 lg:flex lg:h-[40rem]">
-          <Configuration
-            randomizeMeme={randomizeMeme}
-            handleGalleryModal={handleGalleryModal}
-            captions={state.captions}
-            config={state.config}
-            setConfig={setConfig}
-            setCaptions={setCaptions}
-            addCaption={addCaption}
-            deleteCaption={deleteCaption}
-          />
-          <section className="w-full px-0 py-3 lg:flex lg:h-full lg:w-2/3 lg:content-center lg:overflow-y-auto lg:border-l-2 lg:border-gray-900 lg:p-2">
-            {loading ? (
-              <Spinner color="teal" className="m-auto h-20 w-20" />
-            ) : (
-              <Preview
-                template={state.template}
-                captions={state.captions}
-                config={state.config}
-              />
-            )}
-          </section>
-        </CardBody>
-        <CardFooter>
-          <Button
-            variant="filled"
-            className="flex items-center justify-center gap-3"
-            fullWidth
-            onClick={downloadMeme}
-            disabled={rendering}
-          >
-            {rendering ? (
-              <Spinner color="teal" className="h-4 w-4" />
-            ) : (
-              <>
-                <MdSave className="text-base" />
-                Guardar meme
-              </>
-            )}
-          </Button>
-        </CardFooter>
-      </Card>
-
+    <>
+      <main>
+        <Card
+          color="transparent"
+          className="mx-auto w-full max-w-6xl shadow-lg md:w-11/12 xl:w-4/5 border-2 border-memeplex-800 overflow-hidden"
+        >
+          <CardBody className="h-full border-b-2 border-gray-900 p-0 lg:flex lg:h-[40rem]">
+            <Configuration
+              randomizeMeme={randomizeMeme}
+              handleGalleryModal={handleGalleryModal}
+              captions={state.captions}
+              config={state.config}
+              setConfig={setConfig}
+              setCaptions={setCaptions}
+              addCaption={addCaption}
+              deleteCaption={deleteCaption}
+            />
+            <section className="w-full p-0 lg:flex lg:h-full lg:w-2/3 lg:content-center lg:overflow-y-auto lg:border-l-2 lg:border-gray-900 lg:p-2 bg-memeplex-800">
+              {loading ? (
+                <Spinner color="teal" className="m-auto h-20 w-20" />
+              ) : (
+                <Preview
+                  template={state.template}
+                  captions={state.captions}
+                  config={state.config}
+                />
+              )}
+            </section>
+          </CardBody>
+          <CardFooter>
+            <Button
+              variant="filled"
+              className="flex items-center justify-center gap-3"
+              fullWidth
+              onClick={downloadMeme}
+              disabled={rendering}
+            >
+              {rendering ? (
+                <Spinner color="teal" className="h-4 w-4" />
+              ) : (
+                <>
+                  <MdSave className="text-base" />
+                  Guardar meme
+                </>
+              )}
+            </Button>
+          </CardFooter>
+        </Card>
+      </main>
       {!showModal ? null : (
         <GalleryModal
           memesList={memesList}
@@ -153,7 +155,7 @@ function MemeEditor() {
           handleGalleryModal={handleGalleryModal}
         />
       )}
-    </main>
+    </>
   );
 }
 
