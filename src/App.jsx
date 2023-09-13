@@ -1,6 +1,7 @@
 import { ThemeProvider } from "@material-tailwind/react";
 import Header from "./components/Header";
-import MemeEditor from "./components/MemeEditor";
+import Main from "./components/Editor/Main";
+import Footer from "./components/Footer";
 
 export default function App() {
   const customTheme = {
@@ -19,7 +20,8 @@ export default function App() {
     <ThemeProvider value={customTheme}>
       <div className="App">
         <Header />
-        <MemeEditor />
+        <Main />
+        <Footer />
       </div>
     </ThemeProvider>
   );

@@ -4,7 +4,7 @@ import {
   fontSizes,
   textAlignments,
   strokeWidths,
-} from "../utils/configurationOptions";
+} from "../../utils/configurationOptions";
 import "@melloware/coloris/dist/coloris.css";
 import Coloris from "@melloware/coloris";
 import {

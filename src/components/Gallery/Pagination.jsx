@@ -76,6 +76,7 @@ export default function Pagination({
 
         return (
           <li
+            key={"pag-" + pageNumber + "item-" + index}
             className={tm(
               paginationItemClasses,
               "hover:bg-teal-400/80 active:bg-teal-400",

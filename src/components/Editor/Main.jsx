@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useMemesList } from "../hooks/useMemesList";
-import { ACTIONS, useMemeEditor } from "../hooks/useMemeEditor";
+import { useMemesList } from "../../hooks/useMemesList";
+import { ACTIONS, useMemeEditor } from "../../hooks/useMemeEditor";
 import html2canvas from "html2canvas";
 import {
   Button,
@@ -12,9 +12,9 @@ import {
 import { MdSave } from "react-icons/md";
 import Configuration from "./Configuration";
 import Preview from "./Preview";
-import GalleryModal from "./Gallery/Modal";
+import GalleryModal from "../Gallery/Modal";
 
-function MemeEditor() {
+function Main() {
   const { memesList, loading, error } = useMemesList();
   const memesIds = memesList.map((meme) => meme.id);
   const [state, dispatch] = useMemeEditor();
@@ -50,7 +50,6 @@ function MemeEditor() {
   };
   // - de configuracion:
   function setConfig(e) {
-    // console.log(e)
     const { name, value } = e.target;
     dispatch({ type: ACTIONS.SET_CONFIG, payload: { name, value } });
   }
@@ -66,7 +65,7 @@ function MemeEditor() {
     setShowModal(!showModal);
 
     if (!showModal) {
-      window.scrollTo(0,0)
+      window.scrollTo(0, 0);
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
@@ -103,7 +102,7 @@ function MemeEditor() {
       <main>
         <Card
           color="transparent"
-          className="mx-auto w-full max-w-6xl shadow-lg md:w-11/12 xl:w-4/5 border-2 border-memeplex-800 overflow-hidden"
+          className="mx-auto w-full max-w-6xl overflow-hidden border-2 border-memeplex-800 shadow-lg md:w-11/12 xl:w-4/5"
         >
           <CardBody className="h-full border-b-2 border-gray-900 p-0 lg:flex lg:h-[40rem]">
             <Configuration
@@ -116,7 +115,7 @@ function MemeEditor() {
               addCaption={addCaption}
               deleteCaption={deleteCaption}
             />
-            <section className="w-full p-0 lg:flex lg:h-full lg:w-2/3 lg:content-center lg:overflow-y-auto lg:border-l-2 lg:border-gray-900 lg:p-2 bg-memeplex-800">
+            <section className="w-full bg-memeplex-800 p-0 lg:flex lg:h-full lg:w-2/3 lg:content-center lg:overflow-y-auto lg:border-l-2 lg:border-gray-900 lg:p-2">
               {loading ? (
                 <Spinner color="teal" className="m-auto h-20 w-20" />
               ) : (
@@ -148,7 +147,7 @@ function MemeEditor() {
           </CardFooter>
         </Card>
       </main>
-      {!showModal ? null : (
+      {showModal && (
         <GalleryModal
           memesList={memesList}
           dispatchMeme={dispatchMeme}
@@ -159,4 +158,4 @@ function MemeEditor() {
   );
 }
 
-export default MemeEditor;
+export default Main;
