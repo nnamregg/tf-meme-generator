@@ -7,21 +7,23 @@ export function useMemesList() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    setLoading(true)
-
     async function fetchMemesList () {
+      setLoading(true)
+
       try {
         const res = await axios.get("https://api.imgflip.com/get_memes");
         const memes = res.data.data.memes;
         setMemesList(memes);
         localStorage.setItem("memesList", JSON.stringify(memes));
-        
       } catch (e) {
-        console.error("error -> ", e);
         setError(e);
         localStorage.setItem("fetchError", JSON.stringify(e));
       }
+      
+      setLoading(false)
+
     };
+    
     
     if(!localStorage.getItem("memesList")) {
       fetchMemesList()
@@ -30,7 +32,6 @@ export function useMemesList() {
       setMemesList(parsedList)
     }
     
-    setLoading(false)
     
   }, []);
 
