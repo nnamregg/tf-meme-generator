@@ -14,6 +14,7 @@ import {
   IconButton,
   Input,
   Tooltip,
+  Typography,
 } from "@material-tailwind/react";
 import { BsBorderWidth, BsShuffle } from "react-icons/bs";
 import {
@@ -134,7 +135,7 @@ function Configuration({
           <Tooltip content="Alineación de texto" placement="bottom-start">
             <IconButton
               size="lg"
-              className="m-auto shrink-0 rounded-full text-base"
+              className="m-auto shrink-0 rounded-full text-lg"
               name={config.textAlign}
               onClick={(e) => handleTextAlignConfig(e)}
             >
@@ -165,7 +166,11 @@ function Configuration({
                   case "0":
                     return <MdOutlineCancel />;
                   default:
-                    return <BsBorderWidth />;
+                    return (
+                      <Typography variant="h6">
+                        {config.fontStrokeWidth}
+                      </Typography>
+                    );
                 }
               })()}
             </IconButton>
@@ -173,7 +178,10 @@ function Configuration({
 
           <Tooltip content="Color de fondo" placement="bottom-start">
             <div className="relative mx-auto">
-              <MdFormatColorFill className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 text-base" />
+              <MdFormatColorFill
+                className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 cursor-pointer text-lg"
+                onClick={(e) => document.getElementById("fontColor").click()}
+              />
               <input
                 name="fontColor"
                 id="fontColor"
@@ -186,7 +194,12 @@ function Configuration({
 
           <Tooltip content="Color de borde" placement="bottom-start">
             <div className="relative mx-auto">
-              <MdBorderColor className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 text-base" />
+              <MdBorderColor
+                className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 cursor-pointer text-lg"
+                onClick={(e) =>
+                  document.getElementById("fontStrokeColor").click()
+                }
+              />
               <input
                 name="fontStrokeColor"
                 id="fontStrokeColor"
