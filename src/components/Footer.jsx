@@ -48,7 +48,7 @@ export default function Footer() {
       <hr className="mx-auto my-8 border-gray-900 lg:max-w-6xl" />
       <Typography
         color="blue-gray"
-        className="cursor-crosshair select-none text-center text-sm font-normal"
+        className="cursor-not-allowed select-none text-center text-sm font-normal"
       >
         &copy; 2023 nmg
       </Typography>

@@ -92,7 +92,7 @@ function GalleryModal({ memesList, dispatchMeme, handleGalleryModal }) {
           color="teal"
         />
       </header>
-      <div className="mx-auto my-auto grid h-[65%] w-full max-w-6xl grid-cols-2 items-center gap-8 overflow-y-auto px-8 md:grid-cols-4 md:overflow-y-hidden lg:grid-cols-6">
+      <div className="mx-auto my-auto grid h-[65%] w-full max-w-6xl grid-cols-2 grid-rows-6 md:grid-rows-3 lg:grid-rows-2 items-center gap-2 lg:gap-4 overflow-y-auto px-8 md:grid-cols-4 md:overflow-y-hidden lg:grid-cols-6">
         {currentTableData.map((meme) => (
           <TemplateCard
             key={meme.id}
