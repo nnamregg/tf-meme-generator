@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="mx-auto flex flex-row flex-wrap items-center justify-center gap-x-12 gap-y-6 text-center md:justify-between lg:max-w-6xl">
         <div className="flex">
           <img
-            src="/troll-face.png"
+            src="/img/troll-face-sm.png"
             alt="memeplex-logo"
             className="mr-4 w-10"
           />
