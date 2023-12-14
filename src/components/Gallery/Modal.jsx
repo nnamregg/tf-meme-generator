@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   AiOutlineSearch,
   AiFillCheckCircle,
@@ -8,19 +8,35 @@ import { Button, Input } from "@material-tailwind/react";
 import TemplateCard from "./TemplateCard";
 import Pagination from "./Pagination";
 
-let PageSize = 12;
-
 function GalleryModal({ memesList, dispatchMeme, handleGalleryModal }) {
   const [filterMemes, setFilterMemes] = useState(memesList);
   const [selectedTemplateId, setSelectedTemplateId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const onResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", onResize)
+  
+    return () => {
+      window.removeEventListener("resize", onResize)
+    }
+  }, [])
+
+  const getPageSize = (width) => {
+    if(width < 768) return 8;
+    if(width < 1024) return 12;
+    return 18;
+  }
+  
+  const pageSize = useMemo(() => getPageSize(windowWidth), [windowWidth]);
 
   const currentTableData = useMemo(() => {
-    const firstPageIndex = (currentPage - 1) * PageSize;
-    const lastPageIndex = firstPageIndex + PageSize;
+    const firstPageIndex = (currentPage - 1) * pageSize;
+    const lastPageIndex = firstPageIndex + pageSize;
 
     return filterMemes.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage, filterMemes]);
+  }, [currentPage, filterMemes, pageSize]);
 
   function fuzzySearch(query, name) {
     const str = name.toLowerCase();
@@ -78,8 +94,8 @@ function GalleryModal({ memesList, dispatchMeme, handleGalleryModal }) {
   }
 
   return (
-    <section className="absolute left-0 top-0 z-20 flex h-full w-full flex-col overflow-hidden bg-black/80 backdrop-blur-md">
-      <header className="relative mx-auto mb-8 mt-16 w-fit lg:mt-24">
+    <section className="fixed left-0 top-0 z-20 flex h-full w-full flex-col overflow-hidden bg-black/80 py-6 backdrop-blur-md md:py-10">
+      <header className="relative mx-auto mb-6 w-fit">
         <Input
           type="search"
           name="search-input"
@@ -92,7 +108,7 @@ function GalleryModal({ memesList, dispatchMeme, handleGalleryModal }) {
           color="teal"
         />
       </header>
-      <div className="mx-auto my-auto grid h-[65%] w-full max-w-6xl grid-cols-2 grid-rows-6 md:grid-rows-3 lg:grid-rows-2 items-center gap-2 lg:gap-4 overflow-y-auto px-8 md:grid-cols-4 md:overflow-y-hidden lg:grid-cols-6">
+      <div className="mx-auto my-auto grid h-full w-full max-w-6xl grid-cols-2 grid-rows-4 items-center gap-2 overflow-y-auto px-6 md:grid-cols-4 md:grid-rows-3 md:overflow-y-hidden lg:grid-cols-6 lg:grid-rows-3 lg:gap-4">
         {currentTableData.map((meme) => (
           <TemplateCard
             key={meme.id}
@@ -102,12 +118,12 @@ function GalleryModal({ memesList, dispatchMeme, handleGalleryModal }) {
           />
         ))}
       </div>
-      <footer className="mx-auto mb-12 mt-4 w-[90%] max-w-6xl">
+      <footer className="mx-auto w-[90%] max-w-6xl">
         <Pagination
           onPageChange={(page) => setCurrentPage(page)}
           totalCount={filterMemes.length}
           currentPage={currentPage}
-          pageSize={PageSize}
+          pageSize={pageSize}
         />
         <div className="mx-auto flex max-w-md justify-center gap-4">
           <Button

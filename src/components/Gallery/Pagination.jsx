@@ -20,7 +20,6 @@ export default function Pagination({
     pageSize,
   });
 
-  // Evita renderizar el componente si son menos de 2 pags.
   if (currentPage === 0 || paginationRange.length < 2) {
     return null;
   }
@@ -58,8 +57,6 @@ export default function Pagination({
       </li>
 
       {paginationRange.map((pageNumber, index) => {
-        // If the pageItem is a DOT, render the DOTS unicode character
-        // ????
         if (pageNumber === DOTS) {
           return (
             <li
@@ -87,7 +84,6 @@ export default function Pagination({
             {pageNumber}
           </li>
         );
-
       })}
 
       <li

@@ -64,12 +64,9 @@ function Main() {
   const handleGalleryModal = () => {
     setShowModal(!showModal);
 
-    if (!showModal) {
-      window.scrollTo(0, 0);
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    !showModal
+      ? (document.body.style.overflow = "hidden")
+      : (document.body.style.overflow = "auto");
   };
 
   function downloadMeme() {
