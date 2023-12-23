@@ -1,5 +1,5 @@
 /*
-  Opciones básicas de configuración
+  Opciones básicas de configuración + configuración inicial
  */
 
 export const fontFamilies = [
@@ -16,18 +16,19 @@ export const textAlignments = [ 'start', 'center', 'end' ];
 
 export const strokeWidths = ['0', '0.5', '1', '1.5', '2', '2.5', '3'];
 
+/* 
 const getRandomItem = (arr) => {
-  // why ? just why ???
-  // just because...
+  // Por si se quiere aleatorizar la configuración inicial
   const randomIndex = (Math.floor(Math.random() * arr.length))
-  return arr[randomIndex]
+  return arr.at(randomIndex)
 }
+ */
 
 export const initialConfig = {
-  fontFamily: getRandomItem(fontFamilies),
-  fontSize: getRandomItem(fontSizes),
+  fontFamily: fontFamilies.at(0),
+  fontSize: fontSizes.at(9),
   fontColor: "#fff",
   fontStrokeColor: "#000", 
-  fontStrokeWidth: getRandomItem(strokeWidths),
-  textAlign: getRandomItem(textAlignments),
+  fontStrokeWidth: strokeWidths.at(3),
+  textAlign: textAlignments.at(0),
 }

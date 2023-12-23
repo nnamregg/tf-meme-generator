@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 export function useMemesList() {
   const [memesList, setMemesList] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [fetchError, setFetchError] = useState(null);
 
   useEffect(() => {
     async function fetchMemesList() {
@@ -14,11 +14,11 @@ export function useMemesList() {
         const res = await axios.get("https://api.imgflip.com/get_memes");
         const memes = res.data.data.memes;
         setMemesList(memes);
-        setError(null);
+        setFetchError(null);
         localStorage.setItem("memesList", JSON.stringify(memes));
       } catch (e) {
-        setError(e);
-        localStorage.setItem("fetchError", JSON.stringify(e));
+        setFetchError(e);
+        // localStorage.setItem("fetchError", JSON.stringify(e));
       }
 
       setLoading(false);
@@ -32,5 +32,5 @@ export function useMemesList() {
     }
   }, []);
 
-  return { memesList, loading, error };
+  return { memesList, loading, fetchError };
 }

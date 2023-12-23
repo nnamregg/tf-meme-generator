@@ -3,29 +3,33 @@ import { useMemesList } from "../../hooks/useMemesList";
 import { ACTIONS, useMemeEditor } from "../../hooks/useMemeEditor";
 import html2canvas from "html2canvas";
 import {
+  Alert,
   Button,
   Card,
   CardBody,
   CardFooter,
   Spinner,
 } from "@material-tailwind/react";
-import { MdSave } from "react-icons/md";
+import { MdSave, MdOutlineReportProblem } from "react-icons/md";
 import Configuration from "./Configuration";
 import Preview from "./Preview";
 import GalleryModal from "../Gallery/Modal";
 
 function Main() {
-  const { memesList, loading, error } = useMemesList();
+  const { memesList, loading, fetchError } = useMemesList();
   const memesIds = memesList.map((meme) => meme.id);
   const [state, dispatch] = useMemeEditor();
   const [rendering, setRendering] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
     randomizeMeme();
-    // qué hacemos con el error?
-    if (error) console.log("Error... ", error);
   }, [memesList]);
+  
+  useEffect(() => {
+    if (fetchError !== null) setShowAlert(true);
+  }, [fetchError])
 
   const getRandomListItem = (arr) => {
     // Obtener item aleatorio de lista
@@ -97,6 +101,9 @@ function Main() {
   return (
     <>
       <main>
+      <Alert open={showAlert} onClose={() => setShowAlert(false)} className="mx-auto w-full max-w-6xl my-2" icon={ <MdOutlineReportProblem className="h-6 w-6" />}>
+        {fetchError?.message || ""}
+      </Alert>
         <Card
           color="transparent"
           className="mx-auto w-full max-w-6xl overflow-hidden border-2 border-memeplex-800 shadow-lg md:w-11/12 xl:w-4/5"
@@ -130,7 +137,7 @@ function Main() {
               className="flex items-center justify-center gap-3"
               fullWidth
               onClick={downloadMeme}
-              disabled={rendering}
+              disabled={rendering || !state.template}
             >
               {rendering ? (
                 <Spinner color="teal" className="h-4 w-4" />
