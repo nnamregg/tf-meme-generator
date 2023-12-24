@@ -28,7 +28,7 @@ function Main() {
   }, [memesList]);
   
   useEffect(() => {
-    if (fetchError !== null) setShowAlert(true);
+    fetchError === null ? setShowAlert(false) : setShowAlert(true);
   }, [fetchError])
 
   const getRandomListItem = (arr) => {
@@ -127,6 +127,7 @@ function Main() {
                   template={state.template}
                   captions={state.captions}
                   config={state.config}
+                  fetchError={fetchError}
                 />
               )}
             </section>
